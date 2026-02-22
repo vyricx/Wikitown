@@ -127,12 +127,37 @@ body {
   min-height: 500px;
 }
 
+/* Page header with edit button */
+.page-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
 .page-title {
   font-size: 1.6rem;
   font-weight: 600;
   color: #fff;
-  margin-bottom: 8px;
   letter-spacing: -0.3px;
+}
+
+.edit-page-btn {
+  padding: 5px 14px;
+  font-size: 0.75rem;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background: #1a1a1a;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.edit-page-btn:hover {
+  border-color: #555;
+  color: #ccc;
 }
 
 .page-category {
@@ -236,6 +261,329 @@ body {
   flex: 1;
   height: 32px;
   max-width: 400px;
+}
+
+/* ===== Front Page ===== */
+.frontpage {
+  max-width: 800px;
+}
+
+.frontpage-welcome {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.frontpage-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: -0.3px;
+}
+
+.frontpage-desc {
+  font-size: 0.9rem;
+  color: #888;
+  line-height: 1.6;
+}
+
+.frontpage-section-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #555;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.frontpage-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.category-card {
+  background: #151515;
+  border: 1px solid #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
+}
+
+.category-card:hover {
+  border-color: #333;
+  transform: translateY(-2px);
+}
+
+.category-card-img {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #111;
+}
+
+.category-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.category-card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  background: #111;
+}
+
+.category-card-label {
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #ccc;
+  text-align: center;
+}
+
+/* ===== Editor ===== */
+.editor {
+  max-width: 900px;
+}
+
+.editor-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.editor-top-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.editor-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #555;
+}
+
+.editor-slug {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.editor-top-right {
+  display: flex;
+  gap: 8px;
+}
+
+.editor-cancel-btn {
+  padding: 7px 18px;
+  font-size: 0.8rem;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #1a1a1a;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.editor-cancel-btn:hover {
+  border-color: #555;
+  color: #fff;
+}
+
+.editor-save-btn {
+  padding: 7px 20px;
+  font-size: 0.8rem;
+  border: 1px solid #fff;
+  border-radius: 6px;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.editor-save-btn:hover {
+  background: #ddd;
+}
+
+.editor-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.editor-key-row {
+  margin-bottom: 12px;
+}
+
+.editor-key-input {
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  background: #111;
+  color: #e0e0e0;
+  outline: none;
+  width: 260px;
+  font-family: monospace;
+  letter-spacing: 1px;
+}
+
+.editor-key-input:focus {
+  border-color: #444;
+}
+
+.editor-error {
+  color: #f87171;
+  font-size: 0.78rem;
+  margin-bottom: 12px;
+}
+
+.editor-fields {
+  margin-bottom: 14px;
+}
+
+.editor-field {
+  margin-bottom: 10px;
+}
+
+.editor-field label {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.editor-field input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  background: #111;
+  color: #e0e0e0;
+  outline: none;
+}
+
+.editor-field input:focus {
+  border-color: #444;
+}
+
+.editor-field-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+}
+
+/* Toolbar */
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 8px;
+  background: #151515;
+  border: 1px solid #222;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+}
+
+.editor-toolbar button {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #aaa;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  min-height: 28px;
+  transition: all 0.1s;
+}
+
+.editor-toolbar button:hover {
+  background: #222;
+  color: #fff;
+  border-color: #333;
+}
+
+.editor-toolbar button b {
+  font-weight: 700;
+}
+
+.editor-toolbar button i {
+  font-style: italic;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 20px;
+  background: #2a2a2a;
+  margin: 0 4px;
+}
+
+/* Editor area */
+.editor-area {
+  min-height: 400px;
+  padding: 20px;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 0 0 6px 6px;
+  color: #e0e0e0;
+  line-height: 1.7;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.editor-area:focus {
+  border-color: #333;
+}
+
+.editor-area strong,
+.editor-area b {
+  color: #fff;
+}
+
+.editor-area .wiki-link {
+  color: #60a5fa;
+}
+
+.editor-area .wiki-figure {
+  margin: 12px 0;
+  padding: 8px;
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  border-radius: 4px;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.editor-area .wiki-figure img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 2px;
+}
+
+.editor-area .wiki-audio {
+  margin: 8px 0;
+  padding: 8px 12px;
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  border-radius: 4px;
 }
 
 /* Scrollbar */
