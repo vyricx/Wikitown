@@ -8,4 +8,4 @@ directory = "./dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "wikitown-db"
-database_id = "YOUR_DATABASE_ID_HERE"
+database_id = "5f572aa3-4629-48ef-9010-4b9b542c232e"
