@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
+    "dev": "vite build && wrangler dev",
+    "build": "vite build",
+    "deploy": "vite build && wrangler deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,8 +23,10 @@
   "homepage": "https://github.com/vyricx/Wikitown#readme",
   "dependencies": {
     "@cloudflare/workers-types": "^4.20260228.0",
+    "@vitejs/plugin-react": "^5.1.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "vite": "^7.3.1",
     "wrangler": "^4.67.0"
   },
   "devDependencies": {

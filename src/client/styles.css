@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #f6f6f6;
+  color: #202122;
+}
+
+.wiki-header {
+  background: #fff;
+  border-bottom: 1px solid #a7d7f9;
+  padding: 10px 20px;
+}
+
+.wiki-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wiki-logo {
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #202122;
+  font-family: "Linux Libertine", Georgia, Times, serif;
+}
+
+.wiki-search input {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border: 1px solid #a2a9b1;
+  border-radius: 2px;
+  width: 260px;
+}
+
+.wiki-body {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  min-height: calc(100vh - 52px);
+}
+
+.wiki-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: #fff;
+  border-right: 1px solid #a7d7f9;
+  padding: 16px;
+  font-size: 0.85rem;
+}
+
+.wiki-sidebar h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #54595d;
+  margin: 16px 0 8px;
+  letter-spacing: 0.5px;
+}
+
+.wiki-sidebar h3:first-child {
+  margin-top: 0;
+}
+
+.wiki-sidebar ul {
+  list-style: none;
+}
+
+.wiki-sidebar li {
+  margin-bottom: 4px;
+}
+
+.wiki-sidebar a {
+  color: #0645ad;
+  text-decoration: none;
+}
+
+.wiki-sidebar a:hover {
+  text-decoration: underline;
+}
+
+.wiki-sidebar a.active {
+  font-weight: bold;
+  color: #202122;
+}
+
+.wiki-page-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.wiki-content {
+  flex: 1;
+  background: #fff;
+  padding: 20px 30px;
+  min-height: 500px;
+}
+
+.page-title {
+  font-family: "Linux Libertine", Georgia, Times, serif;
+  font-size: 1.8rem;
+  font-weight: normal;
+  border-bottom: 1px solid #a2a9b1;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+}
+
+.page-category {
+  display: inline-block;
+  background: #eaf3ff;
+  color: #0645ad;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 0.8rem;
+  margin-bottom: 16px;
+}
+
+.page-body {
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.wiki-link {
+  color: #0645ad;
+  text-decoration: none;
+}
+
+.wiki-link:hover {
+  text-decoration: underline;
+}
+
+.page-meta {
+  margin-top: 30px;
+  padding-top: 12px;
+  border-top: 1px solid #eaecf0;
+  font-size: 0.8rem;
+  color: #72777d;
+}
+
+.page-not-found {
+  text-align: center;
+  padding: 60px 20px;
+  color: #72777d;
+}
+
+.page-not-found h1 {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  color: #202122;
+}
