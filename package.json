@@ -1,0 +1,34 @@
+{
+  "name": "wiki",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vyricx/Wikitown.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/vyricx/Wikitown/issues"
+  },
+  "homepage": "https://github.com/vyricx/Wikitown#readme",
+  "dependencies": {
+    "@cloudflare/workers-types": "^4.20260228.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "wrangler": "^4.67.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
+  }
+}
