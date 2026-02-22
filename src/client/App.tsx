@@ -20,16 +20,6 @@ interface PageFull {
   updated_at: string;
 }
 
-const EDITOR_KEY = "EditorKeyWikitown2026xQ9mR4bL7pZwNcYsV3jKd8fHgTaU";
-
-function KeyIcon() {
-  return (
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
-    </svg>
-  );
-}
-
 export default function App() {
   const [currentSlug, setCurrentSlug] = useState<string | null>(null);
   const [page, setPage] = useState<PageFull | null>(null);
@@ -38,17 +28,6 @@ export default function App() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // Auth & editing
-  const [showKeyPanel, setShowKeyPanel] = useState(false);
-  const [keyInput, setKeyInput] = useState("");
-  const [keyError, setKeyError] = useState("");
-  const [authenticated, setAuthenticated] = useState(false);
-  const [editing, setEditing] = useState(false);
-  const [editTitle, setEditTitle] = useState("");
-  const [editContent, setEditContent] = useState("");
-  const [editSummary, setEditSummary] = useState("");
-  const [editCategory, setEditCategory] = useState("");
 
   // Handle browser back/forward
   useEffect(() => {
@@ -62,7 +41,6 @@ export default function App() {
     const onPop = () => {
       const s = window.location.pathname.replace(/^\/wiki\//, "") || "main-page";
       setCurrentSlug(s);
-      setEditing(false);
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
@@ -80,7 +58,6 @@ export default function App() {
   useEffect(() => {
     if (!currentSlug) return;
     setLoading(true);
-    setEditing(false);
     fetch(`/api/pages/${currentSlug}`)
       .then((r) => {
         if (!r.ok) throw new Error("Not found");
@@ -111,48 +88,6 @@ export default function App() {
   function navigateTo(slug: string) {
     window.history.pushState({}, "", `/wiki/${slug}`);
     setCurrentSlug(slug);
-  }
-
-  function handleKeySubmit() {
-    if (keyInput === EDITOR_KEY) {
-      setAuthenticated(true);
-      setShowKeyPanel(false);
-      setKeyInput("");
-      setKeyError("");
-    } else {
-      setKeyError("Invalid key");
-    }
-  }
-
-  function startEditing() {
-    if (!page) return;
-    setEditTitle(page.title);
-    setEditContent(page.content);
-    setEditSummary(page.summary);
-    setEditCategory(page.category);
-    setEditing(true);
-  }
-
-  async function savePage() {
-    if (!page || !currentSlug) return;
-    const res = await fetch(`/api/pages/${currentSlug}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Editor-Key": EDITOR_KEY,
-      },
-      body: JSON.stringify({
-        title: editTitle,
-        content: editContent,
-        summary: editSummary,
-        category: editCategory,
-      }),
-    });
-    if (res.ok) {
-      const updated = await res.json();
-      setPage(updated);
-      setEditing(false);
-    }
   }
 
   // Simple markdown-like rendering (bold, links, newlines)
@@ -209,59 +144,16 @@ export default function App() {
           <h1 className="wiki-logo" onClick={() => navigateTo("main-page")}>
             Wikitown
           </h1>
-          <div className="wiki-header-right">
-            <div className="wiki-search">
-              <input
-                type="text"
-                placeholder="Search..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-            <button
-              className={`key-btn ${authenticated ? "authenticated" : ""}`}
-              onClick={() => {
-                if (authenticated) {
-                  setAuthenticated(false);
-                  setEditing(false);
-                } else {
-                  setShowKeyPanel(true);
-                }
-              }}
-              title={authenticated ? "Lock editor" : "Unlock editor"}
-            >
-              <KeyIcon />
-            </button>
+          <div className="wiki-search">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
         </div>
       </header>
-
-      {showKeyPanel && (
-        <div className="key-overlay" onClick={() => setShowKeyPanel(false)}>
-          <div className="key-panel" onClick={(e) => e.stopPropagation()}>
-            <h2>Editor Key</h2>
-            <p>Enter the 50-character editor key to unlock editing.</p>
-            <input
-              type="password"
-              value={keyInput}
-              onChange={(e) => {
-                setKeyInput(e.target.value);
-                setKeyError("");
-              }}
-              onKeyDown={(e) => e.key === "Enter" && handleKeySubmit()}
-              placeholder="Enter key..."
-              autoFocus
-            />
-            {keyError && <div className="key-error">{keyError}</div>}
-            <div className="key-panel-actions">
-              <button onClick={() => setShowKeyPanel(false)}>Cancel</button>
-              <button className="primary" onClick={handleKeySubmit}>
-                Unlock
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <div className="wiki-body">
         <nav className="wiki-sidebar">
@@ -318,62 +210,14 @@ export default function App() {
             <p>Loading...</p>
           ) : page ? (
             <>
-              {authenticated && !editing && (
-                <div className="edit-bar">
-                  <button onClick={startEditing}>Edit page</button>
-                </div>
+              <h1 className="page-title">{page.title}</h1>
+              {page.category && (
+                <span className="page-category">{page.category}</span>
               )}
-
-              {editing ? (
-                <>
-                  <div className="edit-bar">
-                    <button className="save-btn" onClick={savePage}>Save</button>
-                    <button onClick={() => setEditing(false)}>Cancel</button>
-                  </div>
-                  <div className="edit-field">
-                    <label>Title</label>
-                    <input
-                      value={editTitle}
-                      onChange={(e) => setEditTitle(e.target.value)}
-                    />
-                  </div>
-                  <div className="edit-field">
-                    <label>Category</label>
-                    <input
-                      value={editCategory}
-                      onChange={(e) => setEditCategory(e.target.value)}
-                    />
-                  </div>
-                  <div className="edit-field">
-                    <label>Summary</label>
-                    <input
-                      value={editSummary}
-                      onChange={(e) => setEditSummary(e.target.value)}
-                    />
-                  </div>
-                  <div className="edit-field">
-                    <label>Content</label>
-                    <textarea
-                      value={editContent}
-                      onChange={(e) => setEditContent(e.target.value)}
-                    />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <h1 className="page-title">{page.title}</h1>
-                  {page.category && (
-                    <span className="page-category">{page.category}</span>
-                  )}
-                  <div className="page-body">
-                    {renderContent(page.content)}
-                  </div>
-                  <footer className="page-meta">
-                    Last updated:{" "}
-                    {new Date(page.updated_at).toLocaleDateString()}
-                  </footer>
-                </>
-              )}
+              <div className="page-body">{renderContent(page.content)}</div>
+              <footer className="page-meta">
+                Last updated: {new Date(page.updated_at).toLocaleDateString()}
+              </footer>
             </>
           ) : (
             <div className="page-not-found">
