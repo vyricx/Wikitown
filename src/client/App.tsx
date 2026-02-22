@@ -90,10 +90,40 @@ export default function App() {
     setCurrentSlug(slug);
   }
 
-  // Simple markdown-like rendering (bold, links, newlines)
+  // Render content with wiki syntax:
+  // **bold**, [[Page Name]] links, {{img:file.png|caption}}, {{audio:file.mp3|title}}
   function renderContent(text: string) {
     const lines = text.split("\n");
     return lines.map((line, i) => {
+      // Check for standalone image line: {{img:filename.png|caption}}
+      const imgMatch = line.match(/^\{\{img:(.*?)(?:\|(.*?))?\}\}$/);
+      if (imgMatch) {
+        const file = imgMatch[1].trim();
+        const caption = imgMatch[2]?.trim();
+        return (
+          <figure key={i} className="wiki-figure">
+            <img src={`/media/${file}`} alt={caption || file} className="wiki-image" />
+            {caption && <figcaption>{caption}</figcaption>}
+          </figure>
+        );
+      }
+
+      // Check for standalone audio line: {{audio:filename.mp3|title}}
+      const audioMatch = line.match(/^\{\{audio:(.*?)(?:\|(.*?))?\}\}$/);
+      if (audioMatch) {
+        const file = audioMatch[1].trim();
+        const title = audioMatch[2]?.trim();
+        return (
+          <div key={i} className="wiki-audio">
+            {title && <span className="wiki-audio-title">{title}</span>}
+            <audio controls preload="none">
+              <source src={`/media/${file}`} />
+            </audio>
+          </div>
+        );
+      }
+
+      // Inline rendering: bold + wiki links
       let parts = line.split(/\*\*(.*?)\*\*/g);
       const elements = parts.map((part, j) =>
         j % 2 === 1 ? <strong key={j}>{part}</strong> : part
@@ -102,27 +132,40 @@ export default function App() {
       const processed: React.ReactNode[] = [];
       elements.forEach((el) => {
         if (typeof el === "string") {
-          const linkParts = el.split(/\[\[(.*?)\]\]/g);
-          linkParts.forEach((lp, k) => {
-            if (k % 2 === 1) {
-              const slug = lp.toLowerCase().replace(/\s+/g, "-");
+          // Handle inline images {{img:file.png}}
+          const inlineParts = el.split(/\{\{img:(.*?)(?:\|(.*?))?\}\}/g);
+          for (let m = 0; m < inlineParts.length; m++) {
+            if (m % 3 === 1) {
+              const file = inlineParts[m].trim();
+              const alt = inlineParts[m + 1]?.trim() || file;
               processed.push(
-                <a
-                  key={`link-${i}-${k}`}
-                  href={`/wiki/${slug}`}
-                  className="wiki-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigateTo(slug);
-                  }}
-                >
-                  {lp}
-                </a>
+                <img key={`img-${i}-${m}`} src={`/media/${file}`} alt={alt} className="wiki-image-inline" />
               );
-            } else {
-              processed.push(lp);
+            } else if (m % 3 === 0) {
+              // Process wiki links in remaining text
+              const linkParts = inlineParts[m].split(/\[\[(.*?)\]\]/g);
+              linkParts.forEach((lp, k) => {
+                if (k % 2 === 1) {
+                  const slug = lp.toLowerCase().replace(/\s+/g, "-");
+                  processed.push(
+                    <a
+                      key={`link-${i}-${m}-${k}`}
+                      href={`/wiki/${slug}`}
+                      className="wiki-link"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigateTo(slug);
+                      }}
+                    >
+                      {lp}
+                    </a>
+                  );
+                } else {
+                  processed.push(lp);
+                }
+              });
             }
-          });
+          }
         } else {
           processed.push(el);
         }

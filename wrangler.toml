@@ -9,3 +9,7 @@ directory = "./dist"
 binding = "DB"
 database_name = "wikitown-db"
 database_id = "5f572aa3-4629-48ef-9010-4b9b542c232e"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "wikitown-media"

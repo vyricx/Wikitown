@@ -1,6 +1,22 @@
 export interface Env {
   DB: D1Database;
+  MEDIA: R2Bucket;
 }
+
+const MIME_TYPES: Record<string, string> = {
+  png: "image/png",
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  gif: "image/gif",
+  webp: "image/webp",
+  svg: "image/svg+xml",
+  mp3: "audio/mpeg",
+  ogg: "audio/ogg",
+  wav: "audio/wav",
+  flac: "audio/flac",
+  mp4: "video/mp4",
+  webm: "video/webm",
+};
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -10,9 +26,36 @@ export default {
       return handleAPI(url, env);
     }
 
+    // Serve media files from R2
+    if (url.pathname.startsWith("/media/")) {
+      return handleMedia(url, env);
+    }
+
     return new Response("Not Found", { status: 404 });
   },
 } satisfies ExportedHandler<Env>;
+
+async function handleMedia(url: URL, env: Env): Promise<Response> {
+  const key = url.pathname.replace(/^\/media\//, "");
+  if (!key) {
+    return new Response("Not Found", { status: 404 });
+  }
+
+  const object = await env.MEDIA.get(key);
+  if (!object) {
+    return new Response("Not Found", { status: 404 });
+  }
+
+  const ext = key.split(".").pop()?.toLowerCase() || "";
+  const contentType = MIME_TYPES[ext] || "application/octet-stream";
+
+  return new Response(object.body, {
+    headers: {
+      "Content-Type": contentType,
+      "Cache-Control": "public, max-age=86400",
+    },
+  });
+}
 
 async function handleAPI(url: URL, env: Env): Promise<Response> {
   const headers = {
